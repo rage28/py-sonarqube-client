@@ -33,6 +33,7 @@ API_CE_COMPONENT = '/api/ce/component'
 API_CE_TASK = '/api/ce/task'
 
 API_MEASURES_COMPONENT = '/api/measures/component'
+API_MEASURES_COMPONENT_TREE = '/api/measures/component_tree'
 API_MEASURES_SEARCH_HISTORY = '/api/measures/search_history'
 
 API_PROJECT_BRANCHES_LIST = '/api/project_branches/list'
