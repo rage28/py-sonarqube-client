@@ -6,17 +6,26 @@ class SonarQubeQualityGates(object):
     def __init__(self, sonarqube):
         self.sonarqube = sonarqube
 
-    def get_qualitygates_project_status(self, project_key, branch):
+    def get_qualitygates_project_status(self, project_key = None, branch = None, analysis_id = None):
         """
-        Get the quality gate status of a project or a Compute Engine task. return 'ok','WARN','ERROR'
+        Get the quality gate status of a project or a Compute Engine task.
+        Either 'analysis_id', or 'project_id' and 'branch' combination must be provided
+        The different statuses returned are: OK, WARN, ERROR, NONE. The NONE status is returned when there is no quality gate associated with the analysis.
+        Returns an HTTP code 404 if the analysis associated with the task is not found or does not exist.
         :param project_key:
         :param branch
+        :param analysis_id
         :return:
         """
-        params = {
-            'projectKey': project_key,
-            'branch': branch
-        }
+        params = {}
+        if analysis_id:
+            params['analysisId'] = analysis_id
+        elif project_key and branch:
+            params['projectKey'] = project_key
+            params['branch'] = branch
+        else:
+            return None
+            
         resp = self.sonarqube._make_call('get', API_QUALITYGATES_PROJECT_STATUS, **params)
         data = resp.json()
         return data['projectStatus']
